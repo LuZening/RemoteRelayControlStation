@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+
+<head>
+    <meta charset="UTF-8">
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Rotator Configuration</title>
+    <script type="text/javascript">window.onload = function () { get_config(); }</script>
+    <script src="get_sensor.js"></script>
+    <script src="send_task.js"></script>
+    <script src="button.js"></script>
+    <script src="config.js"></script>
+</head>
+
+<body>
+    <div>
+        <h1>Rotator configurations</h1>
+    </div>
+    <hr>
+    <div>
+        <h2>Network configurations</h2>
+        <form id="fm_netconfig" action="/setconfig" method="POST" onsubmit="return test_config();"
+            enctype="application/x-www-form-urlencoded">
+            <table border="1">
+            <tr>
+            <td>Identity (name):</td>
+            <td><input type="text" id="s_name" name="s_name" maxlength="31"></td>
+            </tr>
+            Wi-Fi SSID:
+            <input type="text" id="ssid" name="WiFi_SSID" maxlength="31"><br>
+            Wi-Fi Password:
+            <input type="password" id="passwd" name="WiFi_password" maxlength="31"><br>
+            <tr>
+                <td>Upload pictures to http:</td>
+                <td><input type="radio" name="enable_upload_to_server" value=0>Use MQTT
+                <input type="radio" name="enable_upload_to_server" value=1>Use HTML</td>
+            </tr>
+            <tr>
+                <td>Upload destination URL</td>
+                <td><input type="text" id="upload_dest_URL" name = "upload_dest_URL" maxlength="128"></td>
+            </tr>
+            <tr>
+                <td>MQTT broker address</td>
+                <td><input type="text" id="mqtt_broker_URL" name = "mqtt_broker_URL" maxlength="128"></td>
+            </tr>
+            <input type="submit" value="Save">
+            </table>
+        </form>
+
+        <script type="text/javascript">
+            function test_config() {
+                var name = document.getElementById('s_name').value;
+                var name_pattern = new RegExp(/^[a-zA-Z0-9 ]+$/);
+                var ssid = document.getElementById('WiFi_SSID').value;
+                var ssid_pattern = new RegExp(/^[a-zA-Z0-9_]+$/);
+                var passwd = document.getElementById('WiFi_password').value;
+                var passwd_pattern = new RegExp(/^[a-zA-Z0-9_]+$/)
+                if (!name_pattern.test(name)) {
+                    alert("Name can only contain letters, numbers and spaces.");
+                    return false;
+                }
+                if (!ssid_pattern.test(ssid)) {
+                    alert("SSID can only contain letters, numbers and underscores.");
+                    return false;
+                }
+                if (!passwd_pattern.test(passwd)) {
+                    alert("Password can only contain letters, numbers and underscores.");
+                    return false;
+                }
+                return true;
+            }
+        </script>
+        
+        <div>
+            <h2> Save and reboot </h2>
+            <form method="GET" action="/reset">
+                <input type="submit" value="Save and reboot">
+            </form>
+        </div>
+        <script>
+        </script>
+</body>

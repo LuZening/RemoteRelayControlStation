@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<head>
+    <meta charset="UTF-8">
+    <link href="style.css" rel="stylesheet" type="text/css"/>
+    <script src="button.js"></script>
+    <script>
+        window.onload = (function() // load config
+        {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function ()
+            {
+                var s_recv = this.responseText;
+                if(s_recv.length > 0)
+                {
+                    if (s_recv.length <= 1) {
+                        alert("No configurations avaliable. Make a new one.");
+                        return;
+                    }
+                    var s_name = s_recv.match(/s_name=(.*?)[&\n]/)[1];
+                    document.getElementById("s_name").innerText = s_name;
+                }
+            }
+            xhttp.open("GET", "getconfig", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send();
+        });
+    </script>
+    <title>Rotator</title>
+</head>
+<body>
+    <div id="header">
+		<h1 id="title">Remote Switch<h1>
+	</div>
+    <div id="s_name">
+        Loading
+    </div>
+    <nav>
+        <span id="selected"><a href="index.html">Dashboard</a></span>
+        <span><a href="config.html">Config</a></span>
+        <span><a href="flash/index.html">Firmware</a></span>
+    </nav>
+    <!-- Relay control -->
+    <div>
+        <table border="1">
+        <tr>
+            <td>开关 Switch</td>
+            <td>当前状态：<label id="lbl_relay_state"></label></td>
+        </tr>
+        <tr>
+        <td>定时 Timing</td>
+        <td>
+            <input type="number" id="num_relay_time_H">小时h
+            <input type="number" id="num_relay_time_M">分钟m
+            <input type="number" id="num_relay_time_S">秒s
+        </td>
+        <td><button id="btn_clear_timing">清除Clear</button></td>
+        </tr>
+        <tr>
+            <td>
+                <button class="large" id="btn_relay_state">合闸</button>
+            </td>
+        </tr>
+        </table>
+    </div>
+    <!-- Stepper Control -->
+    <div>
+        <table border="1">
+        <tr>
+            <td>电机 Stepper</td>
+            <td>当前状态：<label id="lbl_stepper_state"></label></td>
+        </tr>
+        <tr>
+        <td>限位 Limit</td>
+        <td><label id="lbl_limit_1" hidden="true">闭合 Closed</label></td>
+        <td><label id="lbl_limit_2" hidden="true">全开 Full open</label></td>
+        </tr>
+        <tr>
+            <td><button class="large" id="btn_stepper_backward">闭 Close</button></td>
+            <td><button class="large" id="btn_stepper_forward">开 Open</button></td>
+            <td><button class="large" id="btn_stepper_stop">停 Stop</button></td>
+        </tr>
+        </table>
+    </div>
+    <script src="config.js"></script>
+    <script>get_config();</script>
+</body>
